@@ -10,16 +10,17 @@ import {
 import { GbooksMapper } from '../domain/services/mapper';
 
 export class GoogleSearch implements SearchStrategyPort {
+  private readonly baseUrl = 'https://www.googleapis.com/books/v1/volumes';
+
   constructor(
     private readonly httpService: HttpService,
     private readonly mapper: GbooksMapper,
   ) {}
 
   search(query: SearchQuery): Observable<SearchResult> {
-    const search = `https://www.googleapis.com/books/v1/volumes?q=${query.query}&maxResults=${query.limit || 20}`;
+    const url = this.buildUrl(query);
 
-    // console.log(search);
-    return this.httpService.get<GBooksResponse>(search).pipe(
+    return this.httpService.get<GBooksResponse>(url).pipe(
       map((response: GBooksResponse) => {
         const books = response.items.map((item) => {
           return this.mapper.convert(item);
@@ -36,5 +37,11 @@ export class GoogleSearch implements SearchStrategyPort {
 
   origin() {
     return 'google-books';
+  }
+
+  private buildUrl(query: SearchQuery): string {
+    const { query: q, limit = 20 } = query;
+    const encodedQuery = encodeURIComponent(q.author || q.title || q.isbn);
+    return `${this.baseUrl}?q=${encodedQuery}&maxResults=${limit}`;
   }
 }

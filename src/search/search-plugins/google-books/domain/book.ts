@@ -1,10 +1,10 @@
 export interface GBooksResponse {
   kind: string;
   totalItems: number;
-  items: Gbook[];
+  items: GBook[];
 }
 
-export interface Gbook {
+export interface GBook {
   kind: string;
   id: string;
   etag: string;

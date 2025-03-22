@@ -4,7 +4,6 @@ import {
   Translator,
 } from 'src/catalog/author/domain/interfaces';
 import { Publisher } from 'src/catalog/publisher/domain/interfaces';
-import { ISBN_10, ISBN_13 } from '../../../core/const';
 
 interface Link {
   url: string;

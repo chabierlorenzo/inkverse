@@ -1,8 +1,9 @@
 import { Book } from 'src/catalog/book/domain/interfaces';
-import { Gbook } from '../book';
+import { GBook } from '../book';
+import { SearchMapperPort } from 'src/search/search/domain/ports/mapper.port';
 
-export class GbooksMapper {
-  convert(data: Gbook): Book {
+export class GbooksMapper implements SearchMapperPort<GBook> {
+  convert(data: GBook): Book {
     return {
       title: data.volumeInfo.title,
       edition: {
