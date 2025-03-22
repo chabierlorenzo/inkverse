@@ -1,7 +1,7 @@
 import { SearchStrategyPort } from 'src/search/search/domain/ports/search.port';
 import { GBooksResponse } from '../domain/book';
 import { HttpService } from '@nestjs/axios';
-import { map, Observable } from 'rxjs';
+import { map, Observable, of, switchMap } from 'rxjs';
 
 import {
   SearchQuery,
@@ -9,6 +9,7 @@ import {
 } from 'src/search/search/domain/ports/search-strategy';
 import { GbooksMapper } from '../domain/services/mapper';
 import { Injectable } from '@nestjs/common';
+import { GBooksFilter } from '../domain/services/filter';
 
 @Injectable()
 export class GoogleSearch implements SearchStrategyPort {
@@ -17,6 +18,7 @@ export class GoogleSearch implements SearchStrategyPort {
   constructor(
     private readonly httpService: HttpService,
     private readonly mapper: GbooksMapper,
+    private readonly filter: GBooksFilter,
   ) {}
 
   search(query: SearchQuery): Observable<SearchResult> {
@@ -29,12 +31,15 @@ export class GoogleSearch implements SearchStrategyPort {
           return this.mapper.convert(item);
         });
 
-        return {
+        const result: SearchResult = {
           results: books,
           total: data.totalItems,
           origin: 'google-books',
         };
+
+        return result;
       }),
+      switchMap((result) => this.filter.filter(of(result))),
     );
   }
 
