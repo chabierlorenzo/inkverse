@@ -1,19 +1,18 @@
-import { Controller, Get, Inject, Param } from '@nestjs/common';
-import { SearchStrategyPort } from '../domain/ports/search.port';
+import { Controller, Get, Param } from '@nestjs/common';
+import { SearchPluginsService } from '../../search-plugins/plugin-module/search-plugins.service';
+import { SearchQuery } from '../domain/ports/search-strategy';
+import { forkJoin } from 'rxjs';
 
 @Controller('search')
 export class SearchController {
-  constructor(
-    @Inject('GoogleSearch')
-    private readonly googleSearch: SearchStrategyPort,
-  ) {}
+  constructor(private readonly searchPluginsService: SearchPluginsService) {}
 
   @Get(':query')
   search(@Param('query') query: string) {
     const searchQuery = {};
     const normalizedQuery = query.toLowerCase().trim();
 
-    if (normalizedQuery.includes('isnbn')) {
+    if (normalizedQuery.includes('isbn')) {
       searchQuery['isbn'] = this.extractValue(normalizedQuery, 'isbn');
     } else if (normalizedQuery.includes('author')) {
       searchQuery['author'] = this.extractValue(normalizedQuery, 'author');
@@ -21,9 +20,12 @@ export class SearchController {
       searchQuery['title'] = normalizedQuery;
     }
 
-    return this.googleSearch.search({
-      query: searchQuery,
-    });
+    const plugins = this.searchPluginsService.getAllPlugins();
+    return forkJoin(
+      plugins.map((plugin) =>
+        plugin.search({ query: searchQuery } as SearchQuery),
+      ),
+    );
   }
 
   private extractValue(input: string, key: string): string {

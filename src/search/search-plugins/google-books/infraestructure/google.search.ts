@@ -24,6 +24,8 @@ export class GoogleSearch implements SearchStrategyPort {
   search(query: SearchQuery): Observable<SearchResult> {
     const url = this.buildUrl(query);
 
+    console.log('pidiendo: ', url);
+
     return this.httpService.get<GBooksResponse>(url).pipe(
       map((response) => {
         return this.convertGBooksToBooks(response);
@@ -53,6 +55,11 @@ export class GoogleSearch implements SearchStrategyPort {
 
   private buildUrl(query: SearchQuery): string {
     const { query: q, limit = 20 } = query;
+
+    if (!q || (!q.author && !q.title && !q.isbn)) {
+      throw new Error('Query is required');
+    }
+
     const encodedQuery = encodeURIComponent(q.author || q.title || q.isbn);
     return `${this.baseUrl}?q=${encodedQuery}&maxResults=${limit}`;
   }
