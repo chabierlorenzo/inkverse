@@ -1,5 +1,10 @@
-import { Author } from 'src/catalog/author/domain/interfaces';
+import {
+  Author,
+  Ilustrator,
+  Translator,
+} from 'src/catalog/author/domain/interfaces';
 import { Publisher } from 'src/catalog/publisher/domain/interfaces';
+import { ISBN_10, ISBN_13 } from '../../../core/const';
 
 interface Link {
   url: string;
@@ -10,46 +15,53 @@ interface Link {
 }
 
 export interface Book {
-  id: number;
+  id?: number;
   title: string;
-  subtitle: string;
-  taxonomy: string[];
+  subtitle?: string;
+  edition: BookEdition;
+  taxonomy?: string[];
   authors: Author[];
   lang: string;
-  year_published: number;
+  year_published?: number;
   createdAt: string;
-  affiliates: Affiliate[];
-  tags: string[];
-  links: Link[];
-  edition: BookEdition;
+  affiliates?: Affiliate[];
+  tags?: string[];
+  links?: Link[];
 }
+
+type BookImage = {
+  url: string; // URL de la imagen
+  title?: string; // Título asociado a la imagen
+};
 
 interface Affiliate {
   name: string;
   url: string;
 }
 
-interface BookEdition {
+export interface BookEdition {
   id: number;
   pages: number;
   lang: string;
-  images: string[];
+  images: BookImage[];
   covers: Covers;
-  translators: any[];
-  ilustrators: any[];
-  isbn_13: string;
+  translators: Translator[];
+  ilustrators: Ilustrator[];
+  isbn_13?: string;
+  isbn_10: string;
   edition: number;
   publisher: Publisher;
-  year_published: number;
+  year_published: string;
   info: Info;
+  publisedDate?: Date;
 }
 
 interface Info {
-  eng: string;
-  esp: string;
+  en: string;
+  es: string;
 }
 
 interface Covers {
-  front: string;
-  back: string;
+  front: BookImage;
+  back: BookImage;
 }
