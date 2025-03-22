@@ -2,6 +2,7 @@ import { Book } from 'src/catalog/book/domain/interfaces';
 import { GBook } from '../book';
 import { SearchMapperPort } from 'src/search/search/domain/ports/mapper.port';
 import { Injectable } from '@nestjs/common';
+import { Author } from 'src/catalog/author/domain/interfaces';
 
 @Injectable()
 export class GbooksMapper implements SearchMapperPort<GBook> {
@@ -43,18 +44,25 @@ export class GbooksMapper implements SearchMapperPort<GBook> {
           es: data.volumeInfo.description,
         },
       },
-      authors: data.volumeInfo.authors.map((author) => {
-        return {
-          name: author,
-          bio: '',
-          born: '',
-          died: '',
-          image: '',
-        };
-      }),
+      authors: this.generateAuthorList(data),
       lang: data.volumeInfo.language,
       createdAt: new Date().toISOString(),
     };
+  }
+
+  private generateAuthorList(data: GBook): Author[] {
+    if (!data.volumeInfo.authors) {
+      return [];
+    }
+    return data.volumeInfo.authors.map((author) => {
+      return {
+        name: author,
+        bio: '',
+        born: '',
+        died: '',
+        image: '',
+      };
+    });
   }
 
   private getIsbn(type: 'ISBN_13' | 'ISBN_10', data: GBook) {

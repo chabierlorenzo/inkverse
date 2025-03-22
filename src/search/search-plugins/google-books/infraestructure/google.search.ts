@@ -26,21 +26,25 @@ export class GoogleSearch implements SearchStrategyPort {
 
     return this.httpService.get<GBooksResponse>(url).pipe(
       map((response) => {
-        const data = response.data;
-        const books = data.items.map((item) => {
-          return this.mapper.convert(item);
-        });
-
-        const result: SearchResult = {
-          results: books,
-          total: data.totalItems,
-          origin: 'google-books',
-        };
-
-        return result;
+        return this.convertGBooksToBooks(response);
       }),
       switchMap((result) => this.filter.filter(of(result))),
     );
+  }
+
+  private convertGBooksToBooks(response) {
+    const data = response.data;
+    const books = data.items.map((item) => {
+      return this.mapper.convert(item);
+    });
+
+    const result: SearchResult = {
+      results: books,
+      total: data.totalItems,
+      origin: 'google-books',
+    };
+
+    return result;
   }
 
   origin() {
