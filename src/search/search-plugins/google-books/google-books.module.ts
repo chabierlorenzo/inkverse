@@ -6,7 +6,12 @@ import { GBooksFilter } from './domain/services/filter';
 
 @Module({
   imports: [HttpModule],
-  providers: [GoogleSearch, GbooksMapper, GBooksFilter],
-  exports: [GoogleSearch],
+  exports: ['GoogleSearch'],
+  providers: [
+    GoogleSearch,
+    GbooksMapper,
+    GBooksFilter,
+    { provide: 'GoogleSearch', useClass: GoogleSearch },
+  ],
 })
 export class GoogleBooksModule {}

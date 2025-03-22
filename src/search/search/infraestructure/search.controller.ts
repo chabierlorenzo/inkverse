@@ -1,9 +1,12 @@
-import { Controller, Get, Param } from '@nestjs/common';
-import { GoogleSearch } from 'src/search/search-plugins/google-books/infraestructure/google.search';
+import { Controller, Get, Inject, Param } from '@nestjs/common';
+import { SearchStrategyPort } from '../domain/ports/search.port';
 
 @Controller('search')
 export class SearchController {
-  constructor(private readonly googleSearch: GoogleSearch) {}
+  constructor(
+    @Inject('GoogleSearch')
+    private readonly googleSearch: SearchStrategyPort,
+  ) {}
 
   @Get(':query')
   search(@Param('query') query: string) {
