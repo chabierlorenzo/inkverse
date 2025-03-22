@@ -30,7 +30,7 @@ type ResultOrigin =
 
 // Estrategias de búsqueda y exclusión
 type SearchStrategies = {
-  strategies: ResultOrigin[]; // Lista de orígenes a utilizar
+  strategies?: ResultOrigin[]; // Lista de orígenes a utilizar
   ia_search?: boolean; // Indicador para búsquedas con inteligencia artificial
   exclude?: {
     title?: string; // Excluir resultados con títulos específicos

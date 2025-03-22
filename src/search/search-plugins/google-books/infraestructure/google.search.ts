@@ -8,7 +8,9 @@ import {
   SearchResult,
 } from 'src/search/search/domain/ports/search-strategy';
 import { GbooksMapper } from '../domain/services/mapper';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class GoogleSearch implements SearchStrategyPort {
   private readonly baseUrl = 'https://www.googleapis.com/books/v1/volumes';
 
@@ -21,14 +23,15 @@ export class GoogleSearch implements SearchStrategyPort {
     const url = this.buildUrl(query);
 
     return this.httpService.get<GBooksResponse>(url).pipe(
-      map((response: GBooksResponse) => {
-        const books = response.items.map((item) => {
+      map((response) => {
+        const data = response.data;
+        const books = data.items.map((item) => {
           return this.mapper.convert(item);
         });
 
         return {
           results: books,
-          total: response.totalItems,
+          total: data.totalItems,
           origin: 'google-books',
         };
       }),
