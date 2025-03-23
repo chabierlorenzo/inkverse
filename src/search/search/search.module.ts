@@ -25,7 +25,7 @@ import { OpenApiBookSearch } from '../search-plugins/open-library/infraestructur
           openApiBookSearch.origin(),
           openApiBookSearch,
         );
-        // pluginsService.registerPlugin(googleSearch.origin(), googleSearch);
+        pluginsService.registerPlugin(googleSearch.origin(), googleSearch);
       },
       inject: [GoogleSearch, OpenApiBookSearch, SearchPluginsService],
     },
