@@ -4,6 +4,7 @@ import {
   Translator,
 } from 'src/catalog/author/domain/interfaces';
 import { Publisher } from 'src/catalog/publisher/domain/interfaces';
+import { LANGUAGES } from '../../../core/const';
 
 interface Link {
   url: string;
@@ -20,7 +21,8 @@ export interface Book {
   edition: BookEdition;
   taxonomy?: string[];
   authors: Author[];
-  lang: string;
+  lang: keyof typeof LANGUAGES;
+  translated_from?: keyof typeof LANGUAGES;
   year_published?: number;
   createdAt: string;
   affiliates?: Affiliate[];
@@ -43,7 +45,7 @@ export interface BookEdition {
   pages: number;
   lang: string;
   images: BookImage[];
-  covers: Covers;
+  covers?: Covers;
   translators: Translator[];
   ilustrators: Ilustrator[];
   isbn_13?: string;

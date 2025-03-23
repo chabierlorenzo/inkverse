@@ -3,7 +3,7 @@ import { GBook } from '../book';
 import { SearchMapperPort } from 'src/search/search/domain/ports/mapper.port';
 import { Injectable } from '@nestjs/common';
 import { Author } from 'src/catalog/author/domain/interfaces';
-import { DEFAULT_IMAGE_URL } from 'src/core/const';
+import { DEFAULT_IMAGE_URL, LANGUAGES } from 'src/core/const';
 
 @Injectable()
 export class GbooksMapper implements SearchMapperPort<GBook> {
@@ -46,7 +46,7 @@ export class GbooksMapper implements SearchMapperPort<GBook> {
         },
       },
       authors: this.generateAuthorList(data),
-      lang: data.volumeInfo.language,
+      lang: data.volumeInfo.language as keyof typeof LANGUAGES,
       createdAt: new Date().toISOString(),
     };
   }

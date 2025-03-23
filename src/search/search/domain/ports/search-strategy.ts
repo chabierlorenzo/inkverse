@@ -10,7 +10,7 @@ type Pagination = {
 };
 
 // Orígenes de búsqueda
-type ResultOrigin =
+export type ResultOrigin =
   | 'google-books'
   | 'amazon'
   | 'sintinta'

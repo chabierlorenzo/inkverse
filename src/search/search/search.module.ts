@@ -4,9 +4,11 @@ import { GoogleBooksModule } from '../search-plugins/google-books/google-books.m
 import { SearchPluginsService } from '../search-plugins/plugin-module/search-plugins.service';
 import { SearchResolver } from './infraestructure/graphql/search.resolver';
 import { GoogleSearch } from '../search-plugins/google-books/infraestructure/google.search';
+import { OpenLibraryModule } from '../search-plugins/open-library/open-library.module';
+import { OpenApiBookSearch } from '../search-plugins/open-library/infraestructure/open-api.search';
 
 @Module({
-  imports: [GoogleBooksModule],
+  imports: [GoogleBooksModule, OpenLibraryModule],
   controllers: [SearchController],
   providers: [
     SearchPluginsService,
@@ -16,11 +18,16 @@ import { GoogleSearch } from '../search-plugins/google-books/infraestructure/goo
       provide: 'PLUGIN_REGISTRATION',
       useFactory: (
         googleSearch: GoogleSearch,
+        openApiBookSearch: OpenApiBookSearch,
         pluginsService: SearchPluginsService,
       ) => {
-        pluginsService.registerPlugin('google-books', googleSearch);
+        pluginsService.registerPlugin(
+          openApiBookSearch.origin(),
+          openApiBookSearch,
+        );
+        // pluginsService.registerPlugin(googleSearch.origin(), googleSearch);
       },
-      inject: [GoogleSearch, SearchPluginsService],
+      inject: [GoogleSearch, OpenApiBookSearch, SearchPluginsService],
     },
   ],
   exports: [SearchPluginsService],

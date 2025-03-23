@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs';
-import { SearchQuery, SearchResult } from './search-strategy';
+import { ResultOrigin, SearchQuery, SearchResult } from './search-strategy';
 
 export interface SearchStrategyPort {
   search(query: SearchQuery): Observable<SearchResult>; // Método de búsqueda
 
-  origin(): string; // Origen de búsqueda
+  origin(): ResultOrigin; // Origen de búsqueda
 }

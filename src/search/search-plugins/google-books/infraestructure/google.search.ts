@@ -4,6 +4,7 @@ import { HttpService } from '@nestjs/axios';
 import { map, Observable, of, switchMap } from 'rxjs';
 
 import {
+  ResultOrigin,
   SearchQuery,
   SearchResult,
 } from 'src/search/search/domain/ports/search-strategy';
@@ -49,7 +50,7 @@ export class GoogleSearch implements SearchStrategyPort {
     return result;
   }
 
-  origin() {
+  origin(): ResultOrigin {
     return 'google-books';
   }
 
