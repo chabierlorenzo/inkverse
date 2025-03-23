@@ -6,6 +6,9 @@ import configuration from './config/configuration';
 import { HttpModule } from '@nestjs/axios';
 import { GoogleBooksModule } from './search/search-plugins/google-books/google-books.module';
 import { PluginsModule } from './search/search-plugins/plugin-module/plugin.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -14,6 +17,11 @@ import { PluginsModule } from './search/search-plugins/plugin-module/plugin.modu
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
+    }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      sortSchema: true,
     }),
     SearchModule,
     GoogleBooksModule,

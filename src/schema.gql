@@ -1,0 +1,134 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Book {
+  """Book edition"""
+  affiliates: [BookAffiliates!]!
+
+  """Books author"""
+  authors: [String!]!
+
+  """Book creation"""
+  created_at: String!
+
+  """Book edition"""
+  edition: BookEdition!
+
+  """Book id"""
+  id: Int!
+
+  """Book lang"""
+  lang: String!
+
+  """Book tags"""
+  links: [BookLink!]!
+
+  """Book subtitle"""
+  subtitle: String!
+
+  """Book tags"""
+  tags: [String!]!
+
+  """Books taxonomies"""
+  taxonomy: [String!]!
+
+  """Book title"""
+  title: String!
+
+  """Book tipos"""
+  types: [String!]!
+
+  """Book year published"""
+  year_published: String!
+}
+
+type BookAffiliates {
+  """Book link name"""
+  name: String!
+
+  """Book link url"""
+  url: String!
+}
+
+type BookEdition {
+  covers: Cover!
+  created_at: DateTime
+  edition: Int!
+  eng: String
+  esp: String
+  id: Int!
+  ilustrators: [String!]!
+  images: [String!]!
+
+  """Edition info"""
+  info: BookInfo!
+  isbn_13: String!
+  lang: String!
+  name: String!
+  pages: Int!
+
+  """Edition publisher"""
+  publisher: BookPublisher!
+  translators: [String!]!
+  updated_at: DateTime
+  year_published: Int!
+}
+
+type BookInfo {
+  """Book info eng"""
+  eng: String!
+
+  """Book info esp"""
+  esp: String!
+}
+
+type BookLink {
+  """Book link date"""
+  date: String!
+
+  """Book link description"""
+  description: String!
+
+  """Book link name"""
+  name: String!
+
+  """Book link type"""
+  type: String!
+
+  """Book link url"""
+  url: String!
+}
+
+type BookPublisher {
+  """Edition isbn"""
+  canonical: String!
+
+  """Edition pages"""
+  id: Float!
+
+  """Edition limages"""
+  name: [String!]!
+}
+
+type Cover {
+  back: String!
+  front: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  search(query: String!): SearchResponse!
+}
+
+type SearchResponse {
+  results: [SearchResult!]!
+}
+
+type SearchResult {
+  books: [Book!]!
+}
