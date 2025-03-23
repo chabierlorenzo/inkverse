@@ -2,46 +2,57 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Author {
-  bio: String!
-  born: String!
-  died: String!
-  image: String!
+type AuthorGQ {
+  bio: String
   name: String!
+  tags: [String!]
 }
 
-type BookEdition {
-  back: BookImage!
-  edition: Float!
-  front: BookImage!
-  id: Float!
-  ilustrators: [String!]!
-  images: [BookImage!]!
+type BookEditionGQ {
+  covers: CoversGQ
+  ilustrators: [IlustratorGQ!]!
+  images: [BookImageGQ!]!
   info: Info!
-  isbn_10: String!
+  isbn_10: String
   isbn_13: String
   lang: String!
   pages: Float!
-  publisher: Publisher!
-  translators: [String!]!
+  publisher: PublisherGQ!
+  translators: [TranslatorGQ!]!
   year_published: String!
 }
 
-type BookImage {
-  title: String
-  url: String!
-}
-
-type BookType {
-  authors: [Author!]!
+type BookGQ {
+  authors: [AuthorGQ!]!
   createdAt: String!
-  edition: BookEdition!
-  id: Float
-  lang: String!
-  subtitle: String
+  edition: BookEditionGQ!
+  origin: String!
+  tags: [String!]
   taxonomy: [String!]
   title: String!
-  year_published: Float
+}
+
+type BookImageGQ {
+  height: Float
+  title: String
+  url: String!
+  width: Float
+}
+
+type BookSearchGQ {
+  author: String
+  isbn: String
+  title: String
+}
+
+type CoversGQ {
+  back: BookImageGQ!
+  front: BookImageGQ!
+}
+
+type IlustratorGQ {
+  bio: String
+  name: String!
 }
 
 type Info {
@@ -49,17 +60,24 @@ type Info {
   es: String!
 }
 
-type Publisher {
+type PublisherGQ {
   name: String!
   url: String!
 }
 
 type Query {
-  search(query: String!): [SearchResultGQ!]!
+  search(query: String!): SearchResultGQ!
 }
 
 type SearchResultGQ {
-  books: [BookType!]!
-  origin: String!
+  books: [BookGQ!]!
+  consolidatedBook: BookGQ
+  consolidatedBookEdition: BookEditionGQ
+  search: BookSearchGQ!
   total: Float!
+}
+
+type TranslatorGQ {
+  bio: String
+  name: String!
 }

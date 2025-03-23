@@ -40,7 +40,7 @@ type SearchStrategies = {
 };
 
 // Datos de búsqueda
-type BookSearch = {
+export type BookSearch = {
   title?: string; // Título del libro
   author?: string; // Autor del libro
   isbn?: ISBN; // ISBN del libro

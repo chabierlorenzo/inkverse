@@ -1,67 +1,76 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { ResultOrigin } from '../../domain/ports/search-strategy';
 
 @ObjectType()
-class BookImage {
+export class BookImageGQ {
   @Field()
   url: string;
 
   @Field({ nullable: true })
   title?: string;
+
+  @Field({ nullable: true })
+  width?: number;
+
+  @Field({ nullable: true })
+  height?: number;
 }
 
 @ObjectType()
-class Publisher {
+export class Info {
+  @Field()
+  es: string;
+
+  @Field()
+  en: string;
+}
+
+@ObjectType()
+export class CoversGQ {
+  @Field(() => BookImageGQ)
+  front: BookImageGQ;
+
+  @Field(() => BookImageGQ)
+  back: BookImageGQ;
+}
+
+@ObjectType()
+export class PublisherGQ {
   @Field()
   name: string;
 
   @Field()
   url: string;
 }
-@ObjectType()
-class Info {
-  @Field()
-  en: string;
 
-  @Field()
-  es: string;
-}
 @ObjectType()
-class BookEdition {
-  @Field()
-  id: number;
-
+export class BookEditionGQ {
   @Field()
   pages: number;
 
   @Field()
   lang: string;
 
-  @Field(() => [BookImage])
-  images: BookImage[];
+  @Field(() => [BookImageGQ])
+  images: BookImageGQ[];
 
-  @Field(() => BookImage)
-  front: BookImage;
+  @Field(() => CoversGQ, { nullable: true })
+  covers?: CoversGQ;
 
-  @Field(() => BookImage)
-  back: BookImage;
+  @Field(() => [TranslatorGQ])
+  translators?: TranslatorGQ[];
 
-  @Field(() => [String])
-  translators: string[];
-
-  @Field(() => [String])
-  ilustrators: string[];
+  @Field(() => [IlustratorGQ])
+  ilustrators?: IlustratorGQ[];
 
   @Field({ nullable: true })
   isbn_13?: string;
 
-  @Field()
-  isbn_10: string;
+  @Field({ nullable: true })
+  isbn_10?: string;
 
   @Field()
-  edition: number;
-
-  @Field(() => Publisher)
-  publisher: Publisher;
+  publisher: PublisherGQ;
 
   @Field()
   year_published: string;
@@ -71,61 +80,85 @@ class BookEdition {
 }
 
 @ObjectType()
-class Author {
+export class AuthorGQ {
   @Field()
-  name: string;
+  name?: string;
 
-  @Field()
-  bio: string;
+  @Field({ nullable: true })
+  bio?: string;
 
-  @Field()
-  born: string;
-
-  @Field()
-  died: string;
-
-  @Field()
-  image: string;
+  @Field(() => [String], { nullable: true })
+  tags?: string[];
 }
 
 @ObjectType()
-export class BookType {
-  @Field({ nullable: true })
-  id?: number;
+export class TranslatorGQ {
+  @Field()
+  name?: string;
 
+  @Field({ nullable: true })
+  bio?: string;
+}
+
+@ObjectType()
+export class IlustratorGQ {
+  @Field()
+  name?: string;
+
+  @Field({ nullable: true })
+  bio?: string;
+}
+
+@ObjectType()
+export class BookGQ {
   @Field()
   title: string;
 
-  @Field({ nullable: true })
-  subtitle?: string;
+  @Field(() => [AuthorGQ])
+  authors: AuthorGQ[];
 
-  @Field(() => BookEdition)
-  edition: BookEdition;
+  @Field(() => BookEditionGQ)
+  edition: BookEditionGQ;
 
   @Field(() => [String], { nullable: true })
   taxonomy?: string[];
 
-  @Field(() => [Author])
-  authors: Author[];
-
-  @Field()
-  lang: string;
-
-  @Field({ nullable: true })
-  year_published?: number;
+  @Field(() => [String], { nullable: true })
+  tags?: string[];
 
   @Field()
   createdAt: string;
+
+  @Field(() => String)
+  origin?: ResultOrigin;
+}
+
+@ObjectType()
+export class BookSearchGQ {
+  @Field({ nullable: true })
+  title?: string;
+
+  @Field({ nullable: true })
+  author?: string;
+
+  @Field({ nullable: true })
+  isbn?: string;
 }
 
 @ObjectType()
 export class SearchResultGQ {
-  @Field(() => [BookType])
-  books: BookType[];
+  @Field(() => BookSearchGQ)
+  search: BookSearchGQ;
+
+  @Field(() => [BookGQ])
+  books: BookGQ[];
 
   @Field()
   total: number;
 
-  @Field()
-  origin: string;
+  @Field(() => BookGQ, { nullable: true })
+  consolidatedBook: BookGQ | null;
+
+  @Field(() => BookEditionGQ, { nullable: true })
+  consolidatedBookEdition: BookEditionGQ | null;
 }

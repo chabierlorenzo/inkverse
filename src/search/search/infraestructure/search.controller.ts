@@ -2,10 +2,15 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { SearchPluginsService } from '../../search-plugins/plugin-module/search-plugins.service';
 import { SearchQuery } from '../domain/ports/search-strategy';
 import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ConsolidateService } from '../../search-consolidator/domain/services/consolidate.service';
 
 @Controller('search')
 export class SearchController {
-  constructor(private readonly searchPluginsService: SearchPluginsService) {}
+  constructor(
+    private readonly searchPluginsService: SearchPluginsService,
+    private readonly consolidateService: ConsolidateService,
+  ) {}
 
   @Get(':query')
   search(@Param('query') query: string) {
@@ -24,6 +29,10 @@ export class SearchController {
     return forkJoin(
       plugins.map((plugin) =>
         plugin.search({ query: searchQuery } as SearchQuery),
+      ),
+    ).pipe(
+      map((results) =>
+        this.consolidateService.consolidate(results, searchQuery),
       ),
     );
   }

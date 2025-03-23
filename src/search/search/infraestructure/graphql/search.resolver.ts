@@ -1,15 +1,20 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Resolver, Query, Args } from '@nestjs/graphql';
 import { SearchPluginsService } from '../../../search-plugins/plugin-module/search-plugins.service';
 import { SearchQuery } from '../../domain/ports/search-strategy';
 import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ConsolidateService } from '../../../search-consolidator/domain/services/consolidate.service';
 import { SearchResultGQ } from './search.type';
 
-@Resolver()
+@Resolver('Search')
 export class SearchResolver {
-  constructor(private readonly searchPluginsService: SearchPluginsService) {}
+  constructor(
+    private readonly searchPluginsService: SearchPluginsService,
+    private readonly consolidateService: ConsolidateService,
+  ) {}
 
-  @Query(() => [SearchResultGQ])
-  search(@Args('query') query: string) {
+  @Query(() => SearchResultGQ)
+  async search(@Args('query') query: string): Promise<SearchResultGQ> {
     const searchQuery = {};
     const normalizedQuery = query.toLowerCase().trim();
 
@@ -22,16 +27,17 @@ export class SearchResolver {
     }
 
     const plugins = this.searchPluginsService.getAllPlugins();
-
-    if (!plugins.length) {
-      return { results: [] };
-    }
-
     return forkJoin(
       plugins.map((plugin) =>
         plugin.search({ query: searchQuery } as SearchQuery),
       ),
-    );
+    )
+      .pipe(
+        map((results) =>
+          this.consolidateService.consolidate(results, searchQuery),
+        ),
+      )
+      .toPromise();
   }
 
   private extractValue(input: string, key: string): string {

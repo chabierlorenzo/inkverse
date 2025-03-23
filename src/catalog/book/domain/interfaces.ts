@@ -30,9 +30,11 @@ export interface Book {
   links?: Link[];
 }
 
-type BookImage = {
+export type BookImage = {
   url: string; // URL de la imagen
   title?: string; // Título asociado a la imagen
+  width?: number; // Ancho de la imagen
+  height?: number; // Alto de la imagen
 };
 
 interface Affiliate {
@@ -49,7 +51,7 @@ export interface BookEdition {
   translators: Translator[];
   ilustrators: Ilustrator[];
   isbn_13?: string;
-  isbn_10: string;
+  isbn_10?: string;
   edition: number;
   publisher: Publisher;
   year_published: string;
@@ -57,12 +59,12 @@ export interface BookEdition {
   publisedDate?: Date;
 }
 
-interface Info {
+export interface Info {
   en: string;
   es: string;
 }
 
-interface Covers {
+export interface Covers {
   front: BookImage;
   back: BookImage;
 }
