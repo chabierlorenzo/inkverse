@@ -41,7 +41,7 @@ export class GoogleSearch implements SearchStrategyPort {
     });
 
     const result: SearchResult = {
-      results: books,
+      books: books,
       total: data.totalItems,
       origin: 'google-books',
     };

@@ -54,7 +54,7 @@ export type SearchQuery = {
 
 // Resultado de la búsqueda
 export type SearchResult = {
-  results: Book[];
+  books: Book[];
   total: number;
   metadata?: Record<string, any>;
   origin?: ResultOrigin;

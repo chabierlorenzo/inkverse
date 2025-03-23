@@ -9,7 +9,7 @@ export class GBooksFilter implements FilterStrategyPort {
   filter(result: Observable<SearchResult>): Observable<SearchResult> {
     return result.pipe(
       map((res) => {
-        res.results = res.results.filter(
+        res.books = res.books.filter(
           (book: Book) => book.edition.isbn_10 || book.edition.isbn_13,
         );
         return res;

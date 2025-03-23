@@ -2,133 +2,64 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Book {
-  """Book edition"""
-  affiliates: [BookAffiliates!]!
-
-  """Books author"""
-  authors: [String!]!
-
-  """Book creation"""
-  created_at: String!
-
-  """Book edition"""
-  edition: BookEdition!
-
-  """Book id"""
-  id: Int!
-
-  """Book lang"""
-  lang: String!
-
-  """Book tags"""
-  links: [BookLink!]!
-
-  """Book subtitle"""
-  subtitle: String!
-
-  """Book tags"""
-  tags: [String!]!
-
-  """Books taxonomies"""
-  taxonomy: [String!]!
-
-  """Book title"""
-  title: String!
-
-  """Book tipos"""
-  types: [String!]!
-
-  """Book year published"""
-  year_published: String!
-}
-
-type BookAffiliates {
-  """Book link name"""
+type Author {
+  bio: String!
+  born: String!
+  died: String!
+  image: String!
   name: String!
-
-  """Book link url"""
-  url: String!
 }
 
 type BookEdition {
-  covers: Cover!
-  created_at: DateTime
-  edition: Int!
-  eng: String
-  esp: String
-  id: Int!
+  back: BookImage!
+  edition: Float!
+  front: BookImage!
+  id: Float!
   ilustrators: [String!]!
-  images: [String!]!
-
-  """Edition info"""
-  info: BookInfo!
-  isbn_13: String!
+  images: [BookImage!]!
+  info: Info!
+  isbn_10: String!
+  isbn_13: String
   lang: String!
-  name: String!
-  pages: Int!
-
-  """Edition publisher"""
-  publisher: BookPublisher!
+  pages: Float!
+  publisher: Publisher!
   translators: [String!]!
-  updated_at: DateTime
-  year_published: Int!
+  year_published: String!
 }
 
-type BookInfo {
-  """Book info eng"""
-  eng: String!
-
-  """Book info esp"""
-  esp: String!
-}
-
-type BookLink {
-  """Book link date"""
-  date: String!
-
-  """Book link description"""
-  description: String!
-
-  """Book link name"""
-  name: String!
-
-  """Book link type"""
-  type: String!
-
-  """Book link url"""
+type BookImage {
+  title: String
   url: String!
 }
 
-type BookPublisher {
-  """Edition isbn"""
-  canonical: String!
-
-  """Edition pages"""
-  id: Float!
-
-  """Edition limages"""
-  name: [String!]!
+type BookType {
+  authors: [Author!]!
+  createdAt: String!
+  edition: BookEdition!
+  id: Float
+  lang: String!
+  subtitle: String
+  taxonomy: [String!]
+  title: String!
+  year_published: Float
 }
 
-type Cover {
-  back: String!
-  front: String!
+type Info {
+  en: String!
+  es: String!
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
+type Publisher {
+  name: String!
+  url: String!
+}
 
 type Query {
-  search(query: String!): SearchResponse!
+  search(query: String!): [SearchResultGQ!]!
 }
 
-type SearchResponse {
-  results: [SearchResult!]!
-}
-
-type SearchResult {
-  books: [Book!]!
+type SearchResultGQ {
+  books: [BookType!]!
+  origin: String!
+  total: Float!
 }

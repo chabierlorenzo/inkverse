@@ -3,6 +3,7 @@ import { GBook } from '../book';
 import { SearchMapperPort } from 'src/search/search/domain/ports/mapper.port';
 import { Injectable } from '@nestjs/common';
 import { Author } from 'src/catalog/author/domain/interfaces';
+import { DEFAULT_IMAGE_URL } from 'src/core/const';
 
 @Injectable()
 export class GbooksMapper implements SearchMapperPort<GBook> {
@@ -15,17 +16,17 @@ export class GbooksMapper implements SearchMapperPort<GBook> {
         lang: data.volumeInfo.language,
         images: [
           {
-            url: data.volumeInfo.imageLinks?.thumbnail,
+            url: data.volumeInfo.imageLinks?.thumbnail || DEFAULT_IMAGE_URL,
             title: data.volumeInfo.title,
           },
         ],
         covers: {
           front: {
-            url: data.volumeInfo.imageLinks?.thumbnail,
+            url: data.volumeInfo.imageLinks?.thumbnail || DEFAULT_IMAGE_URL,
             title: data.volumeInfo.title,
           },
           back: {
-            url: data.volumeInfo.imageLinks?.thumbnail,
+            url: data.volumeInfo.imageLinks?.thumbnail || DEFAULT_IMAGE_URL,
             title: data.volumeInfo.title,
           },
         },
