@@ -1,12 +1,15 @@
 import { Resolver, Query, Args } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
 import { SearchPluginsService } from '../../../search-plugins/plugin-module/search-plugins.service';
 import { SearchQuery } from '../../domain/ports/search-strategy';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ConsolidateService } from '../../../search-consolidator/domain/services/consolidate.service';
 import { SearchResultGQ } from './search.type';
+import { IpGuard } from '../guards/ip.guard';
 
 @Resolver('Search')
+@UseGuards(IpGuard)
 export class SearchResolver {
   constructor(
     private readonly searchPluginsService: SearchPluginsService,

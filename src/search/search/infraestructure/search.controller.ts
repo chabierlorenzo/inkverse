@@ -1,11 +1,13 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { SearchPluginsService } from '../../search-plugins/plugin-module/search-plugins.service';
 import { SearchQuery } from '../domain/ports/search-strategy';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ConsolidateService } from '../../search-consolidator/domain/services/consolidate.service';
+import { IpGuard } from './guards/ip.guard';
 
 @Controller('search')
+@UseGuards(IpGuard)
 export class SearchController {
   constructor(
     private readonly searchPluginsService: SearchPluginsService,
