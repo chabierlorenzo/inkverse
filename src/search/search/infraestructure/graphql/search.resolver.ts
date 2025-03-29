@@ -7,9 +7,10 @@ import { map } from 'rxjs/operators';
 import { ConsolidateService } from '../../../search-consolidator/domain/services/consolidate.service';
 import { SearchResultGQ } from './search.type';
 import { IpGuard } from '../guards/ip.guard';
+import { TokenGuard } from '../guards/token.guard';
 
 @Resolver('Search')
-@UseGuards(IpGuard)
+@UseGuards(IpGuard, TokenGuard)
 export class SearchResolver {
   constructor(
     private readonly searchPluginsService: SearchPluginsService,

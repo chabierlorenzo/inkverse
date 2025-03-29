@@ -5,9 +5,10 @@ import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ConsolidateService } from '../../search-consolidator/domain/services/consolidate.service';
 import { IpGuard } from './guards/ip.guard';
+import { TokenGuard } from './guards/token.guard';
 
 @Controller('search')
-@UseGuards(IpGuard)
+@UseGuards(IpGuard, TokenGuard)
 export class SearchController {
   constructor(
     private readonly searchPluginsService: SearchPluginsService,

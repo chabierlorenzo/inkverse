@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class IpGuard implements CanActivate {
-  private readonly allowedIps: string[] = ['82.223.99.167'];
+  private readonly allowedIps: string[] = ['82.223.99.167', '::1'];
 
   canActivate(
     context: ExecutionContext,
