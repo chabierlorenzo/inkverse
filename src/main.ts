@@ -8,10 +8,29 @@ async function bootstrap() {
 
   // Configuración de seguridad global
   app.use(helmet());
+
+  // Configuración de CORS
   app.enableCors({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') || '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    origin: [
+      'https://sintinta.com',
+      'https://pre.sintinta.com',
+      /\.sintinta\.com$/,
+    ],
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'Accept',
+      'Origin',
+      'X-Requested-With',
+      'X-Forwarded-For',
+      'X-Real-IP',
+    ],
+    exposedHeaders: ['Content-Length', 'Content-Type'],
     credentials: true,
+    maxAge: 3600,
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   });
 
   // Validación global
