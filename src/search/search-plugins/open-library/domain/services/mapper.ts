@@ -35,8 +35,8 @@ export class OpenApiMapper implements SearchMapperPort<OpenApiBook> {
         },
         year_published: info.publish_date,
         info: {
-          en: info.description.value,
-          es: info.description.value,
+          en: info.description?.value,
+          es: info.description?.value,
         },
       },
       authors: this.generateAuthorList(data),

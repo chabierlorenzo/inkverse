@@ -37,6 +37,15 @@ export class GoogleSearch implements SearchStrategyPort {
 
   private convertGBooksToBooks(response) {
     const data = response.data;
+
+    if (!data || !data.items) {
+      return {
+        books: [],
+        total: 0,
+        origin: 'google-books',
+      } as SearchResult;
+    }
+
     const books = data.items.map((item) => {
       return this.mapper.convert(item);
     });
