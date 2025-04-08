@@ -12,6 +12,7 @@ async function bootstrap() {
   // Configuración de CORS
   app.enableCors({
     origin: [
+      'http://localhost:4200',
       'https://sintinta.com',
       'https://pre.sintinta.com',
       /\.sintinta\.com$/,

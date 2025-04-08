@@ -4,9 +4,16 @@ import { GoogleSearch } from '../search-plugins/google-books/infraestructure/goo
 import { OpenApiBookSearch } from '../search-plugins/open-library/infraestructure/open-api.search';
 import { GoogleBooksModule } from '../search-plugins/google-books/google-books.module';
 import { OpenLibraryModule } from '../search-plugins/open-library/open-library.module';
+import { DataHarvestingModule } from '../search-plugins/data-harvesting/data-harvesting.module';
+import { TodosTusLibrosService } from '../search-plugins/data-harvesting/todos-tus-libros/todos-tus-libros.service';
 
 @Module({
-  imports: [GoogleBooksModule, OpenLibraryModule, SearchOrchestationModule],
+  imports: [
+    GoogleBooksModule,
+    OpenLibraryModule,
+    DataHarvestingModule,
+    SearchOrchestationModule,
+  ],
   providers: [
     SearchPluginsService,
     {
@@ -15,14 +22,21 @@ import { OpenLibraryModule } from '../search-plugins/open-library/open-library.m
         googleSearch: GoogleSearch,
         openApiBookSearch: OpenApiBookSearch,
         pluginsService: SearchPluginsService,
+        todosTusLibros: TodosTusLibrosService,
       ) => {
+        pluginsService.registerPlugin(todosTusLibros.origin(), todosTusLibros);
         pluginsService.registerPlugin(
           openApiBookSearch.origin(),
           openApiBookSearch,
         );
         pluginsService.registerPlugin(googleSearch.origin(), googleSearch);
       },
-      inject: [GoogleSearch, OpenApiBookSearch, SearchPluginsService],
+      inject: [
+        GoogleSearch,
+        OpenApiBookSearch,
+        SearchPluginsService,
+        TodosTusLibrosService,
+      ],
     },
   ],
   exports: [SearchPluginsService],

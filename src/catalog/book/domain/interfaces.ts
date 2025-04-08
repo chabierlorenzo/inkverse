@@ -28,6 +28,7 @@ export interface Book {
   affiliates?: Affiliate[];
   tags?: string[];
   links?: Link[];
+  urls?: string[]; // URL del libro
 }
 
 export type BookImage = {
@@ -43,7 +44,7 @@ interface Affiliate {
 }
 
 export interface BookEdition {
-  id: number;
+  id?: number;
   pages: number;
   lang: string;
   images: BookImage[];
@@ -57,6 +58,7 @@ export interface BookEdition {
   year_published: string;
   info: Info;
   publisedDate?: Date;
+  price?: number;
 }
 
 export interface Info {

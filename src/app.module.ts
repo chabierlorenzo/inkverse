@@ -10,6 +10,7 @@ import { PluginsModule } from './search/search-plugins/plugin-module/plugin.modu
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+import { DataHarvestingModule } from './search/search-plugins/data-harvesting/data-harvesting.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { join } from 'path';
     }),
     SearchModule,
     GoogleBooksModule,
+    DataHarvestingModule,
     CoreModule,
   ],
   controllers: [],
