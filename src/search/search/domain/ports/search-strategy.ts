@@ -12,7 +12,7 @@ type Pagination = {
 // Orígenes de búsqueda
 export type ResultOrigin =
   | 'google-books'
-  | 'amazon'
+  | 'amazon-es'
   | 'sintinta'
   | 'openlibrary'
   | 'goodreads'

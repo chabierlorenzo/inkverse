@@ -6,7 +6,7 @@ export const ISBN_13 = 13;
 export const ISBN_10 = 13;
 
 export const DEFAULT_IMAGE_URL =
-  'https://app.sintinta.com/images/3_the_name_of_the_rose_front.jpg';
+  'https://sintinta.com/assets/books/cover_sintinta.jpg';
 
 export const LANGUAGES = [
   'es', // Español

@@ -112,15 +112,9 @@ export class TodosTusLibrosAdapter {
     }
 
     const bookDetails = $('div.book-details');
-    const img = $('div.book-image img');
     const isbn = html.attribs['data-gtm-isbn'];
     const authorsElements: any = $('div.book-details .author a');
     const authors = [];
-
-    let image = '';
-    try {
-      image = img.data();
-    } catch {}
 
     for (let i = 0; i < authorsElements.length; i++) {
       authors.push($(authorsElements[i]).text());
@@ -132,14 +126,29 @@ export class TodosTusLibrosAdapter {
       $('div.book-details .title').text().trim();
     const urls = $('a', bookDetails); //
 
+    const image = `https://covers.openlibrary.org/b/isbn/${isbn?.replace(/-/g, '')}-L.jpg`;
+
+    console.log('🚀  ~ image:', image);
+
+    const img = $('div.book-image img');
+    let image2 = '';
+    try {
+      image2 = img[0]['attribs']['src'];
+    } catch {}
+    console.log('🚀  ~ image2:', image2);
+
     return {
       title,
       edition: {
         isbn_13: isbn.replace(/-/g, ''),
+        covers: {
+          back: { url: image },
+          front: { url: image },
+        },
         pages: 0,
         lang: 'es',
         publisher: { name: publisher, url: '' },
-        year_published: '',
+        year_published: null,
         info: {
           en: '',
           es: '',
@@ -156,7 +165,11 @@ export class TodosTusLibrosAdapter {
       },
       lang: 'es' as keyof typeof LANGUAGES,
       urls: urls.data(),
-      authors,
+      authors: authors.map((author) => {
+        return {
+          name: author,
+        };
+      }),
       createdAt: new Date().toISOString(),
     };
   }
